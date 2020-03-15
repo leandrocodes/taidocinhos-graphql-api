@@ -10,5 +10,12 @@ module.exports = {
         throw new Error(err)
       }
     }
+  },
+  Mutation: {
+    register(_, args, ctx, info) {
+      // TODO: Validate user data
+      // TODO: Make sure user is unique
+      // TODO: Hash password and auth token
+    }
   }
 }
