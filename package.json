@@ -1,0 +1,30 @@
+{
+  "name": "taidocinhos-graphql-api",
+  "version": "1.0.0",
+  "description": "GraphQL api for taidocinhos.com system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandrocodes/taidocinhos-graphql-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leandrocodes/taidocinhos-graphql-api/issues"
+  },
+  "homepage": "https://github.com/leandrocodes/taidocinhos-graphql-api#readme",
+  "dependencies": {
+    "apollo-server": "^2.11.0",
+    "graphql": "^14.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/register": "^7.8.6",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}
