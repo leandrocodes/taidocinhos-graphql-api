@@ -1,15 +1,33 @@
-import { ApolloServer } from 'apollo-server'
-import gql from 'graphql-tag'
+const { ApolloServer } = require('apollo-server')
+const gql = require('graphql-tag')
+const mongoose = require('mongoose')
+
+const User = require('./models/User')
+const { mongoDB } = require('./config')
 
 const typeDefs = gql`
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    createdAt: String
+  }
+
   type Query {
-    sayHi: String!
+    getUsers: [User]
   }
 `
 
 const resolvers = {
   Query: {
-    sayHi: () => 'Hello World!'
+    getUsers: async () => {
+      try {
+        const users = await User.find()
+        return users
+      } catch (err) {
+        throw new Error(err)
+      }
+    }
   }
 }
 
@@ -18,6 +36,11 @@ const server = new ApolloServer({
   resolvers
 })
 
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`)
-})
+mongoose
+  .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Mongo Connected')
+    server.listen().then(({ url }) => {
+      console.log(`🚀  Server ready at ${url}`)
+    })
+  })
