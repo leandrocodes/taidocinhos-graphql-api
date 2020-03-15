@@ -18,7 +18,8 @@
   "homepage": "https://github.com/leandrocodes/taidocinhos-graphql-api#readme",
   "dependencies": {
     "apollo-server": "^2.11.0",
-    "graphql": "^14.6.0"
+    "graphql": "^14.6.0",
+    "mongoose": "^5.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
