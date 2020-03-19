@@ -1,4 +1,4 @@
-const usersResolvers = require('./userResolvers')
+const usersResolvers = require('./usersResolvers')
 
 module.exports = {
     Query: {

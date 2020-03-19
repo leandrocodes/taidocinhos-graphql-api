@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
-const { validateRegisterInput } = require('../../util/validators')
+const { validateRegisterInput, validateLoginInput } = require('../../util/validators')
 const { secretKey } = require('../../config')
 const User = require('../../models/User')
 
@@ -55,6 +55,15 @@ module.exports = {
         id: res._id,
         token
       }
+    }
+  },
+  async login(_, { email, password }) {
+    const { errors, valid } = validateLoginInput(email, password)
+    const user = await User.findOne({ username })
+
+    if (!user) {
+      errors.general = 'Usuário não encontrado'
+      throw new UserInputError('Email não cadastrado', { errors })
     }
   }
 }
