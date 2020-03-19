@@ -6,6 +6,19 @@ const { validateRegisterInput, validateLoginInput } = require('../../util/valida
 const { secretKey } = require('../../config')
 const User = require('../../models/User')
 
+function generateToken(user) {
+  const token = jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      username: user.username
+    },
+    secretKey,
+    { expiresIn: `1h` }
+  )
+  return token
+}
+
 module.exports = {
   Query: {
     getUsers: async () => {
@@ -40,30 +53,40 @@ module.exports = {
       })
       const res = await newUser.save()
 
-      const token = jwt.sign(
-        {
-          id: res.id,
-          email: res.email,
-          username: res.username
-        },
-        secretKey,
-        { expiresIn: `1h` }
-      )
+      const token = generateToken(res)
 
       return {
         ...res._doc,
         id: res._id,
         token
       }
-    }
-  },
-  async login(_, { email, password }) {
-    const { errors, valid } = validateLoginInput(email, password)
-    const user = await User.findOne({ username })
+    },
+    async login(_, { email, password }) {
+      const { errors, valid } = validateLoginInput(email, password)
+      const user = await User.findOne({ email })
 
-    if (!user) {
-      errors.general = 'Usuário não encontrado'
-      throw new UserInputError('Email não cadastrado', { errors })
+      if (!valid) {
+        throw new UserInputError('Errors', { errors })
+      }
+
+      if (!user) {
+        errors.general = 'Usuário não encontrado'
+        throw new UserInputError('Email não cadastrado', { errors })
+      }
+
+      const match = await bcrypt.compare(password, user.password)
+      if (!match) {
+        errors.general = 'Email ou senha não coincidem'
+        throw new UserInputError('Email ou senha errados', { errors })
+      }
+
+      const token = generateToken(user)
+
+      return {
+        ...user._doc,
+        id: user._id,
+        token
+      }
     }
   }
 }
