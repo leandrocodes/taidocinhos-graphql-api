@@ -5,7 +5,8 @@ const userSchema = new Schema({
   password: String,
   email: String,
   createdAt: String,
-  points: Number
+  points: Number,
+  admin: Boolean
 })
 
 module.exports = model('User', userSchema)

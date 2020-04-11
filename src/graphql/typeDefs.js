@@ -8,6 +8,7 @@ module.exports = gql`
     token: String!
     createdAt: String
     points: Int
+    admin: Boolean
   }
 
   type Query {

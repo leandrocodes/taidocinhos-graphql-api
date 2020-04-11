@@ -50,6 +50,7 @@ module.exports = {
         username,
         password,
         createdAt: new Date().toUTCString(),
+        admin: false,
         points: 0
       })
       const res = await newUser.save()
