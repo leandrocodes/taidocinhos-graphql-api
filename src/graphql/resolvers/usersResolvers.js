@@ -22,8 +22,8 @@ function generateToken(user) {
 
 module.exports = {
   Query: {
-    getUsers: async (root, args, context) => {
-      if (!context.user || !context.user.admin == true) return null
+    getUsers: async (_, args, ctx) => {
+      if (!ctx.user || !ctx.user.admin == true) return null
       else {
         try {
           const users = await User.find({ admin: false })
