@@ -104,16 +104,15 @@ module.exports = {
             const { errors, valid } = validateUpdateInput(updateInput.email)
 
             if (!valid) {
-              throw new UpdateInputError('Errors', { errors })
+              throw new UserInputError('Errors', { errors })
             } else {
-              const verifyEmail = await User.findOne({ email: updateInput.email }).lean()
+              const emailExists = await User.findOne({ email: updateInput.email }).lean()
 
-              if (!verifyEmail) {
+              if (!emailExists) {
                 await userToUpdate.updateOne({ ...updateInput }).lean()
                 const updatedUser = await User.findOne({
-                  ...updateInput
+                  email: updateInput.email
                 }).lean()
-                // console.log(updatedUser)
                 return {
                   ...updatedUser,
                   id: updatedUser._id
@@ -125,7 +124,6 @@ module.exports = {
           } else {
             await userToUpdate.updateOne({ ...updateInput }).lean()
             const updatedUser = await User.findOne({ email }).lean()
-            // console.log(updatedUser)
             return {
               ...updatedUser,
               id: updatedUser._id
