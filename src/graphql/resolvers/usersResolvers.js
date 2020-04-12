@@ -24,10 +24,7 @@ function generateToken(user) {
 module.exports = {
   Query: {},
   Mutation: {
-    async register(
-      _,
-      { registerInput: { username, email, password, confirmPassword } }
-    ) {
+    async register(_, { registerInput: { username, email, password, confirmPassword } }) {
       const { valid, errors } = validateRegisterInput(
         username,
         email,
@@ -97,8 +94,8 @@ module.exports = {
       // TODO: Receber a senha como parametro também (melhroar a segurança)
       if (ctx.user.mail === email || ctx.user.admin === true) {
         const userToUpdate = new User({ ...user })
+
         if (user) {
-          // console.log(updateInput.email)
           if (updateInput.confirmPassword != updateInput.password)
             throw new Error('Senhas não coincidem!')
           else updateInput.password = await bcrypt.hash(updateInput.password, 12)
@@ -109,13 +106,20 @@ module.exports = {
             if (!valid) {
               throw new UpdateInputError('Errors', { errors })
             } else {
-              // TODO: ADICIONAR VERIFICAÇÃO DE EMAIL EXISTENTE!!
-              await userToUpdate.updateOne({ ...updateInput }).lean()
-              const updatedUser = await User.findOne({ ...updateInput }).lean()
-              // console.log(updatedUser)
-              return {
-                ...updatedUser,
-                id: updatedUser._id
+              const verifyEmail = await User.findOne({ email: updateInput.email }).lean()
+
+              if (!verifyEmail) {
+                await userToUpdate.updateOne({ ...updateInput }).lean()
+                const updatedUser = await User.findOne({
+                  ...updateInput
+                }).lean()
+                // console.log(updatedUser)
+                return {
+                  ...updatedUser,
+                  id: updatedUser._id
+                }
+              } else {
+                throw new Error('Email já cadastrado!')
               }
             }
           } else {
