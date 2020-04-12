@@ -1,4 +1,9 @@
-module.exports.validateRegisterInput = (username, email, password, confirmPassword) => {
+module.exports.validateRegisterInput = (
+  username,
+  email,
+  password,
+  confirmPassword
+) => {
   const errors = {}
   if (username.trim() === '') {
     errors.username = 'Nome de usuário não pode ser vazio.'
@@ -32,6 +37,18 @@ module.exports.validateLoginInput = (email, password) => {
     if (!email.match(regex)) {
       errors.email = 'Você não inseriu um endereço de email válido.'
     }
+  }
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1
+  }
+}
+
+module.exports.validateUpdateInput = email => {
+  const errors = {}
+  const regex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/
+  if (!email.match(regex)) {
+    errors.email = 'O novo email não é válido.'
   }
   return {
     errors,

@@ -4,7 +4,8 @@ const { UserInputError } = require('apollo-server')
 
 const {
   validateRegisterInput,
-  validateLoginInput
+  validateLoginInput,
+  validateUpdateInput
 } = require('../../util/validators')
 const { secretKey } = require('../../config')
 const User = require('../../models/User')
@@ -89,6 +90,39 @@ module.exports = {
         id: user._id,
         token
       }
+    },
+    async editProfile(_, { email, updateInput }, ctx) {
+      const user = await User.findOne({ email }).lean()
+      // TODO: Melhorar essa verificação - MUITOS IFS!!
+      if (ctx.user.mail === email || ctx.user.admin === true) {
+        const userToUpdate = new User({ ...user })
+        if (user) {
+          // console.log(updateInput.email)
+          if (updateInput.email) {
+            const { errors, valid } = validateUpdateInput(updateInput.email)
+            if (!valid) {
+              throw new UpdateInputError('Errors', { errors })
+            } else {
+              // TODO: ADICIONAR VERIFICAÇÃO DE EMAIL EXISTENTE!!
+              await userToUpdate.updateOne({ ...updateInput }).lean()
+              const updatedUser = await User.findOne({ ...updateInput }).lean()
+              // console.log(updatedUser)
+              return {
+                ...updatedUser,
+                id: updatedUser._id
+              }
+            }
+          } else {
+            await userToUpdate.updateOne({ ...updateInput }).lean()
+            const updatedUser = await User.findOne({ email }).lean()
+            // console.log(updatedUser)
+            return {
+              ...updatedUser,
+              id: updatedUser._id
+            }
+          }
+        } else throw new Error('Usuário não encontrado ou não existe.')
+      } else throw new Error('Você não está autorizado a fazer isso!')
     }
   }
 }
