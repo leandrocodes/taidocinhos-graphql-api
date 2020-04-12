@@ -24,7 +24,7 @@ const server = new ApolloServer({
     if (!token || token == '') return
     const user = await getUser(token)
     return { user }
-  },
+  }
 })
 
 mongoose

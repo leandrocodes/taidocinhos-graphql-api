@@ -4,7 +4,7 @@ const { UserInputError } = require('apollo-server')
 
 const {
   validateRegisterInput,
-  validateLoginInput,
+  validateLoginInput
 } = require('../../util/validators')
 const { secretKey } = require('../../config')
 const User = require('../../models/User')
@@ -12,7 +12,7 @@ const User = require('../../models/User')
 function generateToken(user) {
   const token = jwt.sign(
     {
-      id: user.id,
+      id: user.id
     },
     secretKey,
     { expiresIn: `1h` }
@@ -21,19 +21,7 @@ function generateToken(user) {
 }
 
 module.exports = {
-  Query: {
-    getUsers: async (_, args, ctx) => {
-      if (!ctx.user || !ctx.user.admin == true) return null
-      else {
-        try {
-          const users = await User.find({ admin: false })
-          return users
-        } catch (err) {
-          throw new Error(err)
-        }
-      }
-    },
-  },
+  Query: {},
   Mutation: {
     async register(
       _,
@@ -52,8 +40,8 @@ module.exports = {
       if (user) {
         throw new UserInputError('Email is taken', {
           errors: {
-            email: 'Email already in usage',
-          },
+            email: 'Email already in usage'
+          }
         })
       }
       password = await bcrypt.hash(password, 12)
@@ -63,7 +51,7 @@ module.exports = {
         password,
         createdAt: new Date().toUTCString(),
         admin: false,
-        points: 0,
+        points: 0
       })
       const res = await newUser.save()
 
@@ -72,7 +60,7 @@ module.exports = {
       return {
         ...res._doc,
         id: res._id,
-        token,
+        token
       }
     },
     async login(_, { email, password }) {
@@ -99,8 +87,8 @@ module.exports = {
       return {
         ...user._doc,
         id: user._id,
-        token,
+        token
       }
-    },
-  },
+    }
+  }
 }
