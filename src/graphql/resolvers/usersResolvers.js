@@ -94,12 +94,18 @@ module.exports = {
     async editProfile(_, { email, updateInput }, ctx) {
       const user = await User.findOne({ email }).lean()
       // TODO: Melhorar essa verificação - MUITOS IFS!!
+      // TODO: Receber a senha como parametro também (melhroar a segurança)
       if (ctx.user.mail === email || ctx.user.admin === true) {
         const userToUpdate = new User({ ...user })
         if (user) {
           // console.log(updateInput.email)
+          if (updateInput.confirmPassword != updateInput.password)
+            throw new Error('Senhas não coincidem!')
+          else updateInput.password = await bcrypt.hash(updateInput.password, 12)
+
           if (updateInput.email) {
             const { errors, valid } = validateUpdateInput(updateInput.email)
+
             if (!valid) {
               throw new UpdateInputError('Errors', { errors })
             } else {

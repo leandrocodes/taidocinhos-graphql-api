@@ -44,7 +44,7 @@ module.exports.validateLoginInput = (email, password) => {
   }
 }
 
-module.exports.validateUpdateInput = email => {
+module.exports.validateUpdateInput = (email, password, confirmPassword) => {
   const errors = {}
   const regex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/
   if (!email.match(regex)) {
