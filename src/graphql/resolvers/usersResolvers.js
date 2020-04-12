@@ -26,7 +26,7 @@ module.exports = {
       if (!context.user || !context.user.admin == true) return null
       else {
         try {
-          const users = await User.find()
+          const users = await User.find({ admin: false })
           return users
         } catch (err) {
           throw new Error(err)
