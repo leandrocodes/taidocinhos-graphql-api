@@ -15,12 +15,13 @@ module.exports = {
     }
   },
   Mutation: {
-    async addPoints(_, { email }, ctx) {
+    async addPoints(_, { email, points }, ctx) {
       if (!ctx.user || !ctx.user.admin == true) return null
       else {
         try {
-          console.log(email)
           const user = await User.findOne({ email })
+          user.points += points
+          user.save()
           return user
         } catch (err) {
           throw new Error(err)
