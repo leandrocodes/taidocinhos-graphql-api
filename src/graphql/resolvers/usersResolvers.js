@@ -2,7 +2,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError } = require('apollo-server')
 
-const { validateRegisterInput, validateLoginInput } = require('../../util/validators')
+const {
+  validateRegisterInput,
+  validateLoginInput,
+} = require('../../util/validators')
 const { secretKey } = require('../../config')
 const User = require('../../models/User')
 
@@ -10,8 +13,6 @@ function generateToken(user) {
   const token = jwt.sign(
     {
       id: user.id,
-      email: user.email,
-      username: user.username
     },
     secretKey,
     { expiresIn: `1h` }
@@ -21,18 +22,29 @@ function generateToken(user) {
 
 module.exports = {
   Query: {
-    getUsers: async () => {
-      try {
-        const users = await User.find()
-        return users
-      } catch (err) {
-        throw new Error(err)
+    getUsers: async (root, args, context) => {
+      if (!context.user || !context.user.admin == true) return null
+      else {
+        try {
+          const users = await User.find()
+          return users
+        } catch (err) {
+          throw new Error(err)
+        }
       }
-    }
+    },
   },
   Mutation: {
-    async register(_, { registerInput: { username, email, password, confirmPassword } }) {
-      const { valid, errors } = validateRegisterInput(username, email, password, confirmPassword)
+    async register(
+      _,
+      { registerInput: { username, email, password, confirmPassword } }
+    ) {
+      const { valid, errors } = validateRegisterInput(
+        username,
+        email,
+        password,
+        confirmPassword
+      )
       if (!valid) {
         throw new UserInputError('Errors', { errors })
       }
@@ -40,8 +52,8 @@ module.exports = {
       if (user) {
         throw new UserInputError('Email is taken', {
           errors: {
-            email: 'Email already in usage'
-          }
+            email: 'Email already in usage',
+          },
         })
       }
       password = await bcrypt.hash(password, 12)
@@ -51,7 +63,7 @@ module.exports = {
         password,
         createdAt: new Date().toUTCString(),
         admin: false,
-        points: 0
+        points: 0,
       })
       const res = await newUser.save()
 
@@ -60,7 +72,7 @@ module.exports = {
       return {
         ...res._doc,
         id: res._id,
-        token
+        token,
       }
     },
     async login(_, { email, password }) {
@@ -87,8 +99,8 @@ module.exports = {
       return {
         ...user._doc,
         id: user._id,
-        token
+        token,
       }
-    }
-  }
+    },
+  },
 }
