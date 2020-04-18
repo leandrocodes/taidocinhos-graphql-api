@@ -1,5 +1,5 @@
 # A GraphQL API that holds user points with authentication and authrorization
-### Using Apollo, MongoDB and JavaScript
+### Currently Using those technologies: Apollo, MongoDB and JavaScript
 
 - ##  V1 API
     - ##### User scopes
