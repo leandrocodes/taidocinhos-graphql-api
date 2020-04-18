@@ -8,6 +8,8 @@ module.exports = gql`
     token: String!
     createdAt: String
     points: Int
+    purchases: Int
+    sweeties: Int
     admin: Boolean
   }
 
