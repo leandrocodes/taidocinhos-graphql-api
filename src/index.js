@@ -1,5 +1,4 @@
-const { ApolloServer } = require('apollo-server-lambda')
-const gql = require('graphql-tag')
+const { ApolloServer, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -33,7 +32,7 @@ mongoose
   .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Mongo Connected')
-    server.listen().then(({ url }) => {
+    server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
       console.log(`🚀  Server ready at ${url}`)
     })
   })
