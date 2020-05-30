@@ -26,7 +26,6 @@ const server = new ApolloServer({
     const user = await getUser(token)
     return { user }
   },
-  introspection: true,
   cors: false
 })
 
