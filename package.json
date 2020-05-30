@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
-    "start": "nodemon -x src/index.js"
+    "deploy": "forever start --minUptime 2000 --spinSleepTime 5 src/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "mongoose": "^5.9.7"
   },
   "devDependencies": {
+    "forever": "^3.0.0",
     "nodemon": "^2.0.3"
   }
 }
