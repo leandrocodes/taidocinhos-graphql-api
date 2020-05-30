@@ -1,4 +1,4 @@
-const { ApolloServer } = require('apollo-server')
+const { ApolloServer } = require('apollo-server-lambda')
 const gql = require('graphql-tag')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
