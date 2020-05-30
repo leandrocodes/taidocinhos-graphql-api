@@ -26,7 +26,8 @@ const server = new ApolloServer({
     const user = await getUser(token)
     return { user }
   },
-  introspection: true
+  introspection: true,
+  cors: false
 })
 
 mongoose
