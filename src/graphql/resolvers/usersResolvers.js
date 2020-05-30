@@ -7,7 +7,7 @@ const {
   validateLoginInput,
   validateUpdateInput
 } = require('../../util/validators')
-const { secretKey } = require('../../config')
+const secretKey = process.env.secretKey
 const User = require('../../models/User')
 
 function generateToken(user) {

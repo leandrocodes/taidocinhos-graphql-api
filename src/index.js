@@ -2,11 +2,13 @@ const { ApolloServer } = require('apollo-server')
 const gql = require('graphql-tag')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
-const { mongoDB } = require('./config')
-const { secretKey } = require('./config')
+
+const mongoDB = process.env.MONGO_HOST
+const secretKey = process.env.secretKey
 const User = require('./models/User')
 
 async function getUser(token) {
