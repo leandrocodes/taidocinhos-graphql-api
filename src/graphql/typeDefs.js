@@ -14,7 +14,7 @@ module.exports = gql`
   }
 
   type Query {
-    getUsers: [User]
+    getUsers: [User!]!
     getPoints(email: String!): User!
   }
 

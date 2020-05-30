@@ -57,7 +57,9 @@ module.exports = {
           }
         })
       }
+
       password = await bcrypt.hash(password, 12)
+
       const newUser = new User({
         email,
         username,
@@ -68,8 +70,8 @@ module.exports = {
         bonuses: 0,
         sweeties: 0
       })
-      const res = await newUser.save()
 
+      const res = await newUser.save()
       const token = generateToken(res)
 
       return {
@@ -121,24 +123,19 @@ module.exports = {
 
           if (updateInput.email) {
             const { errors, valid } = validateUpdateInput(updateInput.email)
+            if (!valid) throw new UserInputError('Errors', { errors })
 
-            if (!valid) {
-              throw new UserInputError('Errors', { errors })
-            } else {
-              const emailExists = await User.findOne({ email: updateInput.email }).lean()
+            const emailExists = await User.findOne({ email: updateInput.email }).lean()
+            if (emailExists) throw new Error('Email já cadastrado!')
 
-              if (!emailExists) {
-                await userToUpdate.updateOne({ ...updateInput }).lean()
-                const updatedUser = await User.findOne({
-                  email: updateInput.email
-                }).lean()
-                return {
-                  ...updatedUser,
-                  id: updatedUser._id
-                }
-              } else {
-                throw new Error('Email já cadastrado!')
-              }
+            await userToUpdate.updateOne({ ...updateInput }).lean()
+            const updatedUser = await User.findOne({
+              email: updateInput.email
+            }).lean()
+
+            return {
+              ...updatedUser,
+              id: updatedUser._id
             }
           } else {
             await userToUpdate.updateOne({ ...updateInput }).lean()
