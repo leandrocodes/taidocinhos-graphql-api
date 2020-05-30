@@ -20,6 +20,7 @@
   "homepage": "https://github.com/leandrocodes/taidocinhos-graphql-api#readme",
   "dependencies": {
     "apollo-server": "^2.12.0",
+    "apollo-server-lambda": "^2.14.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
