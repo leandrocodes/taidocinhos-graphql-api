@@ -8,8 +8,8 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    hello: (root, args, context) => {
-      return `Hello from Netlify function. https://bit.ly/2UXh0fD`
+    hello: (parent, args, context) => {
+      return 'Hello, world!'
     }
   }
 }
