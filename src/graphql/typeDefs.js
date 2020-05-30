@@ -8,14 +8,14 @@ module.exports = gql`
     token: String!
     createdAt: String
     points: Int
-    purchases: Int
     sweeties: Int
+    bonuses: Int
     admin: Boolean
   }
 
   type Query {
     getUsers: [User]
-    getPoints(email: String): User!
+    getPoints(email: String!): User!
   }
 
   input RegisterInput {
@@ -35,7 +35,8 @@ module.exports = gql`
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(email: String!, password: String!): User!
-    addPoints(email: String!, points: Int!): User!
+    addPoints(email: String!, sweeties: Int!): User!
+    retrievePoints(email: String!): User!
     editProfile(email: String!, updateInput: UpdateInput): User
   }
 `

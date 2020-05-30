@@ -6,8 +6,8 @@ const userSchema = new Schema({
   email: String,
   createdAt: String,
   points: Number,
-  purchases: Number,
   sweeties: Number,
+  bonuses: Number,
   admin: Boolean
 })
 
