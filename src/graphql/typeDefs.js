@@ -15,6 +15,7 @@ module.exports = gql`
 
   type Query {
     getUsers: [User]
+    getPoints(email: String): User!
   }
 
   input RegisterInput {

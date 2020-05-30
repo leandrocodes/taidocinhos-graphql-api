@@ -22,7 +22,22 @@ function generateToken(user) {
 }
 
 module.exports = {
-  Query: {},
+  Query: {
+    async getPoints(_, { email }, ctx) {
+      if (ctx.user.email === email || ctx.user.admin) {
+        try {
+          const user = await User.findOne({ email })
+          return {
+            ...user._doc,
+            id: user._id
+          }
+        } catch (err) {
+          throw new Error(err)
+        }
+      } else throw new Error('Você não está autorizado a fazer isso!')
+    }
+  },
+
   Mutation: {
     async register(_, { registerInput: { username, email, password, confirmPassword } }) {
       const { valid, errors } = validateRegisterInput(
@@ -63,6 +78,7 @@ module.exports = {
         token
       }
     },
+
     async login(_, { email, password }) {
       const { errors, valid } = validateLoginInput(email, password)
       const user = await User.findOne({ email })
@@ -90,6 +106,7 @@ module.exports = {
         token
       }
     },
+
     async editProfile(_, { email, updateInput }, ctx) {
       const user = await User.findOne({ email }).lean()
       // TODO: Melhorar essa verificação - MUITOS IFS!!
