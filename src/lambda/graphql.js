@@ -33,9 +33,9 @@ mongoose
   .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Mongo Connected')
-    server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-      console.log(`🚀  Server ready at ${url} \n ${process.env.NODE_ENV}`)
-    })
+    // server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    //   console.log(`🚀  Server ready at ${url} \n ${process.env.NODE_ENV}`)
+    // })
   })
 
 exports.handler = server.createHandler()
