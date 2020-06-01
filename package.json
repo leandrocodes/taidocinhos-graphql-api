@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server/index.js",
     "start": "node server/index.js",
-    "netlify": "cd app && npm i && npm run build && cd ../server/lambda && npm i"
+    "netlify": "cd app && npm i && npm run build && cd ../server/lambda && npm i",
+    "deploy": "cd app && npm i && npm run build && cd ../server/lambda && npm i && netlify deploy -p"
   },
   "repository": {
     "type": "git",
