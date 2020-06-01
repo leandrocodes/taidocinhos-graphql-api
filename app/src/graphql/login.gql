@@ -1,0 +1,10 @@
+  mutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      email
+      username
+      points
+      sweeties
+      bonuses
+      token
+    }
+  }
