@@ -1,4 +1,4 @@
 [build]
-  functions = "src/lambda"
+  functions = "server/lambda"
   command = "npm run netlify"
   publish = "app/dist"
